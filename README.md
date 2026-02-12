@@ -163,39 +163,54 @@ The application will start on **http://localhost:8080**
 
 ## Testing
 
-### Run All Tests
+### Test Suite (TDD - Test Driven Development)
+
+#### Run Tests
 ```bash
-mvn test
+mvn clean test                                    # Run all tests
+mvn test -Dtest=OpenStreetMapIntegrationServiceTest
+mvn test -Dtest=TollPlazaServiceV2Test
+mvn test -Dtest=GeoLocationUtilV2Test
+mvn test -Dtest=TollPlazaControllerTest
+mvn test -Dtest=TollPlazaIntegrationTest
 ```
 
-### Run Specific Test Class
+#### Generate Coverage Report
 ```bash
-mvn test -Dtest=TollPlazaServiceTest
+mvn clean test jacoco:report
+# Report: target/site/jacoco/index.html
 ```
 
-### Run with Coverage Report
-```bash
-mvn test jacoco:report
-```
+### Test Files
 
-### Test Coverage
-- **TollPlazaService**: Tests for core business logic
-  - Valid pincode scenarios
-  - Invalid pincode validation
-  - Same pincode validation
-  - Toll plaza retrieval
-  - Caching functionality
+| Test Class | Tests | Coverage | Focus |
+|-----------|-------|----------|-------|
+| **OpenStreetMapIntegrationServiceTest** | 23 | Photon/OSRM APIs, CSV geocoding, polyline decoding, caching |
+| **TollPlazaServiceV2Test** | 17 | Service layer, validation, toll filtering, distance calculations |
+| **GeoLocationUtilV2Test** | 26 | Haversine distance, route proximity, spatial calculations |
+| **TollPlazaControllerTest** | 18 | REST endpoints, validation, error responses, HTTP methods |
+| **TollPlazaIntegrationTest** | 15+ | End-to-end flows, data consistency, performance, spatial accuracy |
 
-- **TollPlazaController**: REST API endpoint tests
-  - Success scenarios
-  - Error handling
-  - Validation error responses
-  - Health check endpoint
+**Total: 95+ Test Cases**
 
-- **GeoLocationUtil**: Geolocation calculation tests
-  - Distance calculations between known cities
-  - Route proximity detection
-  - Bounding box generation
+### Testing Frameworks
+- **JUnit 5 (Jupiter)**: Test execution
+- **Mockito**: Service/dependency mocking
+- **Spring Boot Test**: Context testing
+- **JaCoCo**: Code coverage analysis
+- **@SpringBootTest**: Full integration tests
+- **@DisplayName**: Descriptive test names
+- **@ParameterizedTest**: Multiple scenario testing
+
+### Key Test Scenarios
+- ✅ Geocoding (valid/invalid pincodes, CSV database)
+- ✅ Routing (polyline decoding, distance calculations)
+- ✅ Service layer (toll filtering, deduplication)
+- ✅ REST API (validation, error handling, HTTP methods)
+- ✅ Spatial accuracy (point-near-route, bounds validation)
+- ✅ Data consistency (multiple requests, caching)
+- ✅ Performance (response time, memory efficiency)
+- ✅ Integration (end-to-end workflows)
 
 ### Testing with Postman
 
